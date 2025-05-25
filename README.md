@@ -1,11 +1,10 @@
-<div align="center">
-  <h1>🛡️ Windows Security Toolkit</h1>
-  <p>A comprehensive PowerShell module for security analysis, auditing, and incident response on Windows systems.</p>
-  
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/WindowsSecurityToolkit)](https://www.powershellgallery.com/packages/WindowsSecurityToolkit)
-  [![GitHub stars](https://img.shields.io/github/stars/yourusername/Windows-Security-Toolkit?style=social)](https://github.com/yourusername/Windows-Security-Toolkit/stargazers)
-</div>
+# 🛡️ Windows Security Toolkit
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/WindowsSecurityToolkit)](https://www.powershellgallery.com/packages/WindowsSecurityToolkit)
+[![GitHub stars](https://img.shields.io/github/stars/yourusername/Windows-Security-Toolkit?style=social)](https://github.com/yourusername/Windows-Security-Toolkit/stargazers)
+
+A comprehensive PowerShell module for security analysis, auditing, and incident response on Windows systems.
 
 ## 🎯 Features
 
@@ -16,21 +15,30 @@
 
 ## 🚀 Quick Start
 
-```powershell
-# Clone the repository
-git clone https://github.com/yourusername/Windows-Security-Toolkit.git
-cd Windows-Security-Toolkit
+1. **Clone the repository**
+   ```powershell
+   git clone https://github.com/yourusername/Windows-Security-Toolkit.git
+   cd Windows-Security-Toolkit
+   ```
 
-# Run the example script
-.\examples\Run-SecurityAudit.ps1
-```
+2. **Run the example script**
+   ```powershell
+   .\examples\Run-SecurityAudit.ps1
+   ```
 
-## 📚 Documentation
+3. **Or import the module directly**
+   ```powershell
+   # Import the module
+   Import-Module .\src\WindowsSecurityToolkit.psd1 -Force
+   
+   # Run a security audit
+   $results = Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
+   ```
 
-<details>
-<summary>🔍 Cmdlets</summary>
+## 📋 Available Commands
 
 ### Get-SystemSecurityAudit
+
 Performs a comprehensive security audit of a Windows system.
 
 ```powershell
@@ -38,7 +46,7 @@ Performs a comprehensive security audit of a Windows system.
 Get-SystemSecurityAudit
 
 # Specify custom output directory
-Get-SystemSecurityAudit -OutputDirectory "C:\\MyAudit"
+Get-SystemSecurityAudit -OutputDirectory "C:\MyAudit"
 ```
 
 #### Output Files
@@ -51,10 +59,7 @@ Get-SystemSecurityAudit -OutputDirectory "C:\\MyAudit"
 - `FirewallRules.csv`: Enabled firewall rules
 - `AuditSummary.csv`: Summary of the audit
 
-</details>
-
-<details>
-<summary>🏗️ Project Structure</summary>
+## 🏗️ Project Structure
 
 ```
 Windows-Security-Toolkit/
@@ -68,12 +73,10 @@ Windows-Security-Toolkit/
 └── docs/              # Documentation
 ```
 
-</details>
-
-<details>
-<summary>🔧 Advanced Usage</summary>
+## 🔧 Advanced Usage
 
 ### Importing the Module
+
 ```powershell
 # Import the module from the source directory
 Import-Module .\src\WindowsSecurityToolkit.psd1 -Force -Verbose
@@ -83,6 +86,7 @@ Get-Command -Module WindowsSecurityToolkit
 ```
 
 ### Running Specific Audits
+
 ```powershell
 # Audit only user accounts
 $users = Get-LocalUser | Select-Object Name, Enabled, LastLogon
@@ -93,10 +97,7 @@ Get-Process | Where-Object { $_.Path -notlike "*Windows*" } |
     Select-Object ProcessName, Id, Path
 ```
 
-</details>
-
-<details>
-<summary>🧪 Examples</summary>
+## 🧪 Examples
 
 ### Basic Audit with Default Settings
 ```powershell
@@ -113,10 +114,7 @@ Get-Process | Where-Object { $_.Path -notlike "*Windows*" } |
 Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-File', '.\examples\Run-SecurityAudit.ps1'
 ```
 
-</details>
-
-<details>
-<summary>🤝 Contributing</summary>
+## 🤝 Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -138,8 +136,6 @@ We welcome contributions! Here's how you can help:
    Invoke-Pester -Path .\tests\
    ```
 
-</details>
-
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -151,9 +147,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Contributors](https://github.com/yourusername/Windows-Security-Toolkit/graphs/contributors)
 
 ---
-<p align="center">
-  Made with PowerShell | 2025
-</p>
+
+Made with PowerShell | 2025
 
 
 
