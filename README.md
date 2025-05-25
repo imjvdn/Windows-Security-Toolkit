@@ -1,10 +1,93 @@
-# 🔒 Windows Security Commands Cheat Sheet
+# 🛡️ Windows Security Toolkit
 
-Quick reference for essential Windows security commands. No setup required - works in PowerShell and Command Prompt.
+A comprehensive PowerShell module for security analysis, auditing, and incident response on Windows systems.
+
+## 📦 Features
+
+- **System Security Audit**: Comprehensive collection of system security information
+- **Easy to Use**: Simple, intuitive cmdlets for security professionals
+- **Extensible**: Modular design for adding new security checks
+- **Detailed Reporting**: CSV output for easy analysis and reporting
 
 ## 🚀 Quick Start
 
-Run any command directly in **PowerShell** or **Command Prompt** (Admin rights required for some commands).
+1. **Clone the repository**
+   ```powershell
+   git clone https://github.com/yourusername/Windows-Security-Toolkit.git
+   cd Windows-Security-Toolkit
+   ```
+
+2. **Run an example script**
+   ```powershell
+   .\examples\Run-SecurityAudit.ps1
+   ```
+
+3. **Or import the module directly**
+   ```powershell
+   # Import the module
+   Import-Module .\src\WindowsSecurityToolkit.psd1 -Force
+   
+   # Run a security audit
+   $results = Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
+   ```
+
+## 📚 Documentation
+
+### Cmdlets
+
+#### Get-SystemSecurityAudit
+Performs a comprehensive security audit of a Windows system.
+
+```powershell
+# Basic usage
+Get-SystemSecurityAudit
+
+# Specify custom output directory
+Get-SystemSecurityAudit -OutputDirectory "C:\MyAudit"
+```
+
+**Output Files:**
+- `SystemInfo.csv`: Basic system information
+- `LocalUsers.csv`: User account information
+- `NetworkConnections.csv`: Active network connections
+- `InstalledSoftware.csv`: Installed applications
+- `ScheduledTasks.csv`: Configured scheduled tasks
+- `RunningServices.csv`: Non-Microsoft running services
+- `FirewallRules.csv`: Enabled firewall rules
+- `AuditSummary.csv`: Summary of the audit
+
+## 🏗️ Project Structure
+
+```
+Windows-Security-Toolkit/
+├── src/                # Source code
+│   ├── Public/        # Functions users will call directly
+│   └── Private/       # Internal helper functions
+├── tests/             # Pester tests
+│   └── environment/   # Test environment setup
+├── examples/          # Example scripts
+├── config/            # Configuration files
+└── docs/              # Documentation
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ for security professionals
+- Inspired by real-world security challenges
+
+
 
 ## 🔍 Basic System Info
 

@@ -1,0 +1,63 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# PowerShell
+*.ps1xml
+*.pssc
+*.psm1
+*.psd1
+!src/**/*.ps1
+!src/**/*.psd1
+!src/**/*.psm1
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Audit output (user data)
+SecurityAudit_*/
+*.csv
+*.log
+
+# Module output
+*.dll
+*.pdb
+*.xml
+
+# Test results
+TestResults/
+*.testresults
+
+# Local development files
+*.local.*
+
+# VS Code workspace settings
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
