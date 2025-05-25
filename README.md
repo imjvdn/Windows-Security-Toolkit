@@ -98,6 +98,45 @@ Write-Host "`n[+] Firewall Status:" -ForegroundColor Green; netsh advfirewall sh
 Write-Host "`n[+] System Uptime:" -ForegroundColor Green; systeminfo | find "System Boot Time:"
 ```
 
+## 🔐 Registry Security
+
+### Check AutoRun Entries
+```powershell
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+```
+
+### Check Suspicious Registry Paths
+```powershell
+# Common persistence locations
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Userinit
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Shell
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Taskman
+```
+
+### Check for Suspicious Services
+```powershell
+reg query "HKLM\SYSTEM\CurrentControlSet\Services" /s | findstr /i "ImagePath" | findstr /v /i "system32"
+```
+
+### Check for AlwaysInstallElevated (Potential Privilege Escalation)
+```powershell
+reg query "HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer" /v AlwaysInstallElevated
+reg query "HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer" /v AlwaysInstallElevated
+```
+
+### Check for Unquoted Service Paths
+```powershell
+wmic service get name,displayname,pathname,startmode | findstr /i "auto" | findstr /i /v "c:\windows\\" | findstr /i /v """
+```
+
+### Check for Weak Registry Permissions
+```powershell
+# Check permissions on sensitive registry keys
+icacls "C:\Windows\System32\config\SAM"
+icacls "C:\Windows\System32\config\SECURITY"
+```
+
 ## 📝 Notes
 - Run as Administrator for best results
 - Commands work on Windows 7/10/11 and Server 2008R2+
