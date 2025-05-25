@@ -1,41 +1,36 @@
-# 🛡️ Windows Security Toolkit
+<div align="center">
+  <h1>🛡️ Windows Security Toolkit</h1>
+  <p>A comprehensive PowerShell module for security analysis, auditing, and incident response on Windows systems.</p>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/WindowsSecurityToolkit)](https://www.powershellgallery.com/packages/WindowsSecurityToolkit)
+  [![GitHub stars](https://img.shields.io/github/stars/yourusername/Windows-Security-Toolkit?style=social)](https://github.com/yourusername/Windows-Security-Toolkit/stargazers)
+</div>
 
-A comprehensive PowerShell module for security analysis, auditing, and incident response on Windows systems.
+## 🎯 Features
 
-## 📦 Features
-
-- **System Security Audit**: Comprehensive collection of system security information
+- **Comprehensive Auditing**: Collect system, user, and network security information
 - **Easy to Use**: Simple, intuitive cmdlets for security professionals
+- **Detailed Reporting**: CSV output for analysis and documentation
 - **Extensible**: Modular design for adding new security checks
-- **Detailed Reporting**: CSV output for easy analysis and reporting
 
 ## 🚀 Quick Start
 
-1. **Clone the repository**
-   ```powershell
-   git clone https://github.com/yourusername/Windows-Security-Toolkit.git
-   cd Windows-Security-Toolkit
-   ```
+```powershell
+# Clone the repository
+git clone https://github.com/yourusername/Windows-Security-Toolkit.git
+cd Windows-Security-Toolkit
 
-2. **Run an example script**
-   ```powershell
-   .\examples\Run-SecurityAudit.ps1
-   ```
-
-3. **Or import the module directly**
-   ```powershell
-   # Import the module
-   Import-Module .\src\WindowsSecurityToolkit.psd1 -Force
-   
-   # Run a security audit
-   $results = Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
-   ```
+# Run the example script
+.\examples\Run-SecurityAudit.ps1
+```
 
 ## 📚 Documentation
 
-### Cmdlets
+<details>
+<summary>🔍 Cmdlets</summary>
 
-#### Get-SystemSecurityAudit
+### Get-SystemSecurityAudit
 Performs a comprehensive security audit of a Windows system.
 
 ```powershell
@@ -43,10 +38,10 @@ Performs a comprehensive security audit of a Windows system.
 Get-SystemSecurityAudit
 
 # Specify custom output directory
-Get-SystemSecurityAudit -OutputDirectory "C:\MyAudit"
+Get-SystemSecurityAudit -OutputDirectory "C:\\MyAudit"
 ```
 
-**Output Files:**
+#### Output Files
 - `SystemInfo.csv`: Basic system information
 - `LocalUsers.csv`: User account information
 - `NetworkConnections.csv`: Active network connections
@@ -56,7 +51,10 @@ Get-SystemSecurityAudit -OutputDirectory "C:\MyAudit"
 - `FirewallRules.csv`: Enabled firewall rules
 - `AuditSummary.csv`: Summary of the audit
 
-## 🏗️ Project Structure
+</details>
+
+<details>
+<summary>🏗️ Project Structure</summary>
 
 ```
 Windows-Security-Toolkit/
@@ -70,13 +68,77 @@ Windows-Security-Toolkit/
 └── docs/              # Documentation
 ```
 
-## 🤝 Contributing
+</details>
+
+<details>
+<summary>🔧 Advanced Usage</summary>
+
+### Importing the Module
+```powershell
+# Import the module from the source directory
+Import-Module .\src\WindowsSecurityToolkit.psd1 -Force -Verbose
+
+# Check available commands
+Get-Command -Module WindowsSecurityToolkit
+```
+
+### Running Specific Audits
+```powershell
+# Audit only user accounts
+$users = Get-LocalUser | Select-Object Name, Enabled, LastLogon
+$users | Export-Csv -Path "UserAudit.csv" -NoTypeInformation
+
+# Check for suspicious processes
+Get-Process | Where-Object { $_.Path -notlike "*Windows*" } | 
+    Select-Object ProcessName, Id, Path
+```
+
+</details>
+
+<details>
+<summary>🧪 Examples</summary>
+
+### Basic Audit with Default Settings
+```powershell
+.\examples\Run-SecurityAudit.ps1
+```
+
+### Custom Output Directory
+```powershell
+.\examples\Run-SecurityAudit.ps1 -OutputDirectory "C:\SecurityAudit_$(Get-Date -Format 'yyyyMMdd')"
+```
+
+### Run as Administrator
+```powershell
+Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-File', '.\examples\Run-SecurityAudit.ps1'
+```
+
+</details>
+
+<details>
+<summary>🤝 Contributing</summary>
+
+We welcome contributions! Here's how you can help:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Development Setup
+
+1. Clone the repository
+2. Install Pester for testing:
+   ```powershell
+   Install-Module -Name Pester -Force -SkipPublisherCheck
+   ```
+3. Run tests:
+   ```powershell
+   Invoke-Pester -Path .\tests\
+   ```
+
+</details>
 
 ## 📜 License
 
@@ -86,6 +148,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with ❤️ for security professionals
 - Inspired by real-world security challenges
+- [Contributors](https://github.com/yourusername/Windows-Security-Toolkit/graphs/contributors)
+
+---
+<p align="center">
+  Made with PowerShell | 2025
+</p>
 
 
 
