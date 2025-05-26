@@ -109,6 +109,32 @@ Import-Module .\src\WindowsSecurityToolkit.psd1
 Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
 ```
 
+## 🚨 Testing
+
+The toolkit includes Pester tests to verify functionality and ensure code quality. The tests are located in the `tests/` directory.
+
+### Running Tests
+
+To run the tests, use the included test runner script:
+
+```powershell
+# Navigate to the tests directory
+cd tests
+
+# Run all tests
+.\Run-Tests.ps1
+```
+
+### Test Structure
+
+- **WindowsSecurityToolkit.Module.Tests.ps1**: Tests for module structure and exports
+- **Get-SystemSecurityAudit.Tests.ps1**: Tests for the main audit function
+- **environment/TestSetup.ps1**: Sets up the test environment
+
+### Adding New Tests
+
+When adding new functionality to the toolkit, please also add corresponding tests to maintain code quality.
+
 ## 💼 Security Scripts
 
 ### Audit Tools
