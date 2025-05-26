@@ -16,14 +16,16 @@
 - [Documentation](#-documentation)
   - [Security Command References](#security-command-references)
   - [Guides & Tutorials](#guides--tutorials)
-- [Testing](#-testing)
-  - [Running Tests](#running-tests)
-  - [Test Structure](#test-structure)
 - [Security Scripts](#-security-scripts)
   - [Audit Tools](#audit-tools)
   - [Reporting Tools](#reporting-tools)
 - [PowerShell Module](#-powershell-module)
+- [Testing](#-testing)
+  - [Running Tests](#running-tests)
+  - [Test Structure](#test-structure)
 - [Advanced Usage](#-advanced-usage)
+- [Security Commands Reference](#-security-commands-reference)
+- [Additional Resources](#-additional-resources)
 - [License](#-license)
 
 ## 🎯 Features
@@ -60,43 +62,28 @@ cd Windows-Security-Toolkit
 <summary>🔍 Cmdlets</summary>
 
 ### Get-SystemSecurityAudit
-Performs a comprehensive security audit of a Windows system.
 
 ```powershell
-# Basic usage
-Get-SystemSecurityAudit
-
-# Specify custom output directory
-Get-SystemSecurityAudit -OutputDirectory "C:\\MyAudit"
+Get-SystemSecurityAudit [-OutputDirectory <String>]
 ```
+
+Performs a comprehensive security audit of the system, collecting information about:
+- System configuration
+- User accounts and permissions
+- Network settings and connections
+- Running processes and services
+- Installed software and updates
+- Security settings and policies
 
 #### Output Files
-- `SystemInfo.csv`: Basic system information
-- `LocalUsers.csv`: User account information
-- `NetworkConnections.csv`: Active network connections
-- `InstalledSoftware.csv`: Installed applications
-- `ScheduledTasks.csv`: Configured scheduled tasks
-- `RunningServices.csv`: Non-Microsoft running services
-- `FirewallRules.csv`: Enabled firewall rules
-- `AuditSummary.csv`: Summary of the audit
 
-</details>
-
-<details>
-<summary>🚧 Project Structure</summary>
-
-```
-Windows-Security-Toolkit/
-├── src/                  # Source code for the PowerShell module
-│   ├── WindowsSecurityToolkit.psd1  # Module manifest
-│   ├── WindowsSecurityToolkit.psm1  # Module script
-│   └── Public/             # Public functions
-│       └── Get-SystemSecurityAudit.ps1
-├── scripts/              # Security scripts
-│   ├── audit-tools/       # Targeted security audit scripts
-│   └── reporting-tools/   # Report generation tools
-└── docs/                # Documentation
-```
+The function creates the following CSV files in the output directory:
+- SystemInfo.csv
+- UserAccounts.csv
+- NetworkConfig.csv
+- RunningProcesses.csv
+- InstalledSoftware.csv
+- SecuritySettings.csv
 
 </details>
 
@@ -131,32 +118,6 @@ Import-Module .\src\WindowsSecurityToolkit.psd1
 Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
 ```
 
-## 🚨 Testing
-
-The toolkit includes Pester tests to verify functionality and ensure code quality. The tests are located in the `tests/` directory.
-
-### Running Tests
-
-To run the tests, use the included test runner script:
-
-```powershell
-# Navigate to the tests directory
-cd tests
-
-# Run all tests
-.\Run-Tests.ps1
-```
-
-### Test Structure
-
-- **WindowsSecurityToolkit.Module.Tests.ps1**: Tests for module structure and exports
-- **Get-SystemSecurityAudit.Tests.ps1**: Tests for the main audit function
-- **environment/TestSetup.ps1**: Sets up the test environment
-
-### Adding New Tests
-
-When adding new functionality to the toolkit, please also add corresponding tests to maintain code quality.
-
 ## 💼 Security Scripts
 
 ### Audit Tools
@@ -184,8 +145,36 @@ The `src/` directory contains the PowerShell module that powers this toolkit:
 - **WindowsSecurityToolkit.psm1**: Module script file
 - **Public/Get-SystemSecurityAudit.ps1**: Main security audit function
 
+## 🚨 Testing
+
+The toolkit includes Pester tests to verify functionality and ensure code quality. The tests are located in the `tests/` directory.
+
+### Running Tests
+
+To run the tests, use the included test runner script:
+
+```powershell
+# Navigate to the tests directory
+cd tests
+
+# Run all tests
+.\Run-Tests.ps1
+```
+
+### Test Structure
+
+- **WindowsSecurityToolkit.Module.Tests.ps1**: Tests for module structure and exports
+- **Get-SystemSecurityAudit.Tests.ps1**: Tests for the main audit function
+- **environment/TestSetup.ps1**: Sets up the test environment
+
+### Adding New Tests
+
+When adding new functionality to the toolkit, please also add corresponding tests to maintain code quality.
+
+## 🔧 Advanced Usage
+
 <details>
-<summary>🔧 Advanced Usage</summary>
+<summary>Advanced Usage Details</summary>
 
 ### Importing the Module
 ```powershell
@@ -199,157 +188,163 @@ Get-Command -Module WindowsSecurityToolkit
 ### Running Specific Audits
 ```powershell
 # Audit only user accounts
-$users = Get-LocalUser | Select-Object Name, Enabled, LastLogon
-$users | Export-Csv -Path "UserAudit.csv" -NoTypeInformation
+$outputDir = "C:\SecurityAudit"
+$userAccountsFile = Join-Path -Path $outputDir -ChildPath "UserAccounts.csv"
 
-# Check for suspicious processes
-Get-Process | Where-Object { $_.Path -notlike "*Windows*" } | 
-    Select-Object ProcessName, Id, Path
+# Get all local users
+Get-LocalUser | Export-Csv -Path $userAccountsFile -NoTypeInformation
+
+# View the results
+Import-Csv -Path $userAccountsFile | Format-Table -AutoSize
 ```
-
-</details>
-
-<details>
-<summary>🧪 Examples</summary>
 
 ### Basic Audit with Default Settings
 ```powershell
-.\examples\Run-SecurityAudit.ps1
+# Run the audit with default settings
+Get-SystemSecurityAudit
 ```
 
 ### Custom Output Directory
 ```powershell
-.\examples\Run-SecurityAudit.ps1 -OutputDirectory "C:\SecurityAudit_$(Get-Date -Format 'yyyyMMdd')"
+# Specify a custom output directory
+Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
 ```
 
 ### Run as Administrator
+For best results, run the toolkit with administrative privileges:
 ```powershell
-Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-File', '.\examples\Run-SecurityAudit.ps1'
+# Start a new PowerShell session as Administrator
+Start-Process powershell -Verb RunAs -ArgumentList "-Command Import-Module .\src\WindowsSecurityToolkit.psd1; Get-SystemSecurityAudit"
 ```
 
 </details>
 
 <details>
-<summary>🤝 Contributing</summary>
-
-We welcome contributions! Here's how you can help:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+<summary>🛠️ Development</summary>
 
 ### Development Setup
-
 1. Clone the repository
-2. Install Pester for testing:
-   ```powershell
-   Install-Module -Name Pester -Force -SkipPublisherCheck
-   ```
-3. Run tests:
-   ```powershell
-   Invoke-Pester -Path .\tests\
-   ```
+```powershell
+git clone https://github.com/imjvdn/Windows-Security-Toolkit.git
+cd Windows-Security-Toolkit
+```
+
+2. Install required modules
+```powershell
+# Install Pester for testing
+Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+
+# Install PSScriptAnalyzer for linting
+Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+```
 
 </details>
 
-## 📜 License
+## 🔍 Security Commands Reference
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ for security professionals
-- Inspired by real-world security challenges
-- [Contributors](https://github.com/imjvdn/Windows-Security-Toolkit/graphs/contributors)
-
----
-<p align="center">
-  Made with PowerShell | 2025
-</p>
-
-
-
-## 🔍 Basic System Info
+<details>
+<summary>Basic System Information Commands</summary>
 
 ### View System Information
 ```powershell
-systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Boot Time"
+# Get basic system information
+systeminfo | Select-String "OS", "System"
 ```
 
 ### Check Uptime
 ```powershell
-net statistics workstation | find "Statistics since"
+# Check system uptime
+(Get-Date) - (Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime
 ```
+</details>
 
-## 👥 User Management
+<details>
+<summary>User Management Commands</summary>
 
 ### List All Users
 ```powershell
-net user
+# List all user accounts
+Get-LocalUser | Format-Table Name, Enabled, LastLogon
 ```
 
 ### View Local Administrators
 ```powershell
-net localgroup administrators
+# List members of the Administrators group
+Get-LocalGroupMember -Group "Administrators"
 ```
 
 ### Check Logged In Users
 ```powershell
+# See currently logged in users
 query user
 ```
+</details>
 
-## 🌐 Network
+<details>
+<summary>Network Commands</summary>
 
 ### View Active Connections
 ```powershell
-netstat -ano | findstr ESTABLISHED
+# List active network connections
+Get-NetTCPConnection -State Established | Format-Table -Property LocalAddress, LocalPort, RemoteAddress, RemotePort, State
 ```
 
 ### Check Firewall Status
 ```powershell
-netsh advfirewall show allprofiles
+# Check Windows Firewall status
+Get-NetFirewallProfile | Format-Table Name, Enabled
 ```
 
 ### Flush DNS Cache
 ```powershell
-ipconfig /flushdns
+# Clear DNS resolver cache
+Clear-DnsClientCache
 ```
+</details>
 
-## 🔍 System Inspection
+<details>
+<summary>System Inspection Commands</summary>
 
 ### List Running Processes
 ```powershell
-tasklist /v | findstr /i "running"
+# View all running processes
+Get-Process | Sort-Object -Property CPU -Descending | Select-Object -First 20
 ```
 
 ### View Installed Software
 ```powershell
-wmic product get name,version
+# List installed applications
+Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate
 ```
 
 ### Check Startup Programs
 ```powershell
-wmic startup get caption,command
+# See what programs run at startup
+Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location, User
 ```
+</details>
 
-## 🛡️ Security Checks
+<details>
+<summary>Security Check Commands</summary>
 
 ### View Installed Updates
 ```powershell
-wmic qfe list brief
+# List installed Windows updates
+Get-HotFix | Sort-Object -Property InstalledOn -Descending
 ```
 
 ### Check Scheduled Tasks
 ```powershell
-schtasks /query /fo TABLE /nh /v
+# View scheduled tasks
+Get-ScheduledTask | Where-Object {$_.State -ne "Disabled"} | Select-Object TaskName, TaskPath, State
 ```
 
 ### View Shared Folders
 ```powershell
-net share
+# List network shares
+Get-SmbShare
 ```
+</details>
 
 ## 📦 One-Click Security Audit
 
@@ -364,6 +359,9 @@ Write-Host "`n[+] System Uptime:" -ForegroundColor Green; systeminfo | find "Sys
 ```
 
 ## 🔐 Registry Security
+
+<details>
+<summary>Registry Security Commands</summary>
 
 ### Check AutoRun Entries
 ```powershell
@@ -401,6 +399,7 @@ wmic service get name,displayname,pathname,startmode | findstr /i "auto" | finds
 icacls "C:\Windows\System32\config\SAM"
 icacls "C:\Windows\System32\config\SECURITY"
 ```
+</details>
 
 ## 📝 Notes
 - Run as Administrator for best results
