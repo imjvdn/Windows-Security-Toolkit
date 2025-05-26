@@ -73,7 +73,6 @@ Windows-Security-Toolkit/
 ├── scripts/              # Security scripts
 │   ├── audit-tools/       # Targeted security audit scripts
 │   └── reporting-tools/   # Report generation tools
-├── examples/            # Example scripts
 └── docs/                # Documentation
 ```
 
