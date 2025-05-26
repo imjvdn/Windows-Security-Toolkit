@@ -78,6 +78,37 @@ Windows-Security-Toolkit/
 
 </details>
 
+## 💼 How to Use This Toolkit
+
+This toolkit provides two ways to perform security audits and generate reports:
+
+### 1. Ready-to-Use Security Scripts
+
+The easiest way to get started is to use our ready-made security scripts in the `scripts/` directory:
+
+```powershell
+# Navigate to the scripts directory
+cd scripts/audit-tools
+
+# Run a comprehensive system audit
+.\Complete-SystemAudit.ps1
+
+# Or run a focused user account audit
+.\Audit-UserAccounts.ps1
+```
+
+### 2. PowerShell Module (Advanced)
+
+For advanced users or integration into existing tools, you can use the PowerShell module in the `src/` directory:
+
+```powershell
+# Import the module
+Import-Module .\src\WindowsSecurityToolkit.psd1
+
+# Run the main audit function
+Get-SystemSecurityAudit -OutputDirectory "C:\SecurityAudit"
+```
+
 ## 💼 Security Scripts
 
 ### Audit Tools
@@ -94,6 +125,14 @@ The `scripts/reporting-tools/` directory contains tools for generating professio
 
 - **Convert-AuditToHtmlReport.ps1**: Creates interactive HTML reports with filtering and search
 - **Generate-ExecutiveSummary.ps1**: Produces executive summaries with key findings and recommendations
+
+## 💻 PowerShell Module
+
+The `src/` directory contains the PowerShell module that powers this toolkit:
+
+- **WindowsSecurityToolkit.psd1**: Module manifest file
+- **WindowsSecurityToolkit.psm1**: Module script file
+- **Public/Get-SystemSecurityAudit.ps1**: Main security audit function
 
 <details>
 <summary>🔧 Advanced Usage</summary>
