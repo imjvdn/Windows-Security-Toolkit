@@ -98,12 +98,14 @@ The easiest way to get started is to use our ready-made security scripts in the 
 
 ```powershell
 # Navigate to the scripts directory
-cd scripts/audit-tools
+cd scripts
 
-# Run a comprehensive system audit
+# Run a comprehensive security assessment that combines multiple tools
+.\Complete-SecurityAssessment.ps1 -Target localhost -IncludeNetworkScan -IncludeSSLCheck -IncludeThreatHunting
+
+# Or run individual audit tools
+cd audit-tools
 .\Complete-SystemAudit.ps1
-
-# Or run a focused user account audit
 .\Audit-UserAccounts.ps1
 ```
 
