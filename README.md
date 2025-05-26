@@ -9,8 +9,10 @@
 ## 🎯 Features
 
 - **Comprehensive Auditing**: Collect system, user, and network security information
+- **Security Compliance**: Evaluate systems against CIS and NIST benchmarks
+- **Interactive Visualizations**: Dynamic dashboards and reports for security analysis
 - **Easy to Use**: Simple, intuitive cmdlets for security professionals
-- **Detailed Reporting**: CSV output for analysis and documentation
+- **Detailed Reporting**: Multiple output formats for analysis and documentation
 - **Extensible**: Modular design for adding new security checks
 
 ## 🚀 Quick Start
@@ -144,6 +146,7 @@ The `scripts/audit-tools/` directory contains specialized security audit scripts
 - **Complete-SystemAudit.ps1**: Comprehensive system-wide security audit
 - **Audit-UserAccounts.ps1**: Focused audit of user accounts and permissions
 - **Audit-NetworkSecurity.ps1**: Network configuration and security assessment
+- **Audit-SecurityCompliance.ps1**: Evaluates system against CIS and NIST security benchmarks
 
 ### Reporting Tools
 
@@ -151,6 +154,7 @@ The `scripts/reporting-tools/` directory contains tools for generating professio
 
 - **Convert-AuditToHtmlReport.ps1**: Creates interactive HTML reports with filtering and search
 - **Generate-ExecutiveSummary.ps1**: Produces executive summaries with key findings and recommendations
+- **Convert-AuditToDashboard.ps1**: Generates an interactive security dashboard with visualizations
 
 ## 💻 PowerShell Module
 
