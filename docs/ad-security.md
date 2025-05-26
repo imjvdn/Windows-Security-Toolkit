@@ -86,6 +86,177 @@ $adminGroups | ForEach-Object {
 }
 ```
 
+## 🔒 Group Management
+
+```powershell
+# Get all security groups
+Get-ADGroup -Filter {GroupCategory -eq 'Security'} -Properties * | 
+    Select-Object Name,GroupCategory,GroupScope,Description |
+    Sort-Object Name | Format-Table -AutoSize
+
+# Get members of Domain Admins group
+Get-ADGroupMember -Identity "Domain Admins" -Recursive | 
+    Get-ADUser -Properties * | 
+    Select-Object Name,SamAccountName,Enabled,LastLogonDate,PasswordLastSet,PasswordNeverExpires |
+    Format-Table -AutoSize
+
+# Find users with admin rights across the domain
+$adminGroups = @("Domain Admins", "Enterprise Admins", "Schema Admins", "Administrators")
+$adminGroups | ForEach-Object {
+    Write-Host "Members of $_ group:" -ForegroundColor Cyan
+    Get-ADGroupMember -Identity $_ -Recursive | 
+        Get-ADUser -Properties * | 
+        Select-Object Name,SamAccountName,Enabled,LastLogonDate |
+        Format-Table -AutoSize
+    Write-Host "`n"
+}
+```
+
+## 🔐 Critical AD Security Groups
+
+```powershell
+# Define critical security groups to audit
+$criticalGroups = @(
+    "Domain Admins",        # Full administrative control over the domain
+    "Enterprise Admins",    # Full administrative control over all domains in the forest
+    "Schema Admins",       # Can modify the Active Directory schema
+    "Server Operators",    # Can administer domain controllers
+    "Backup Operators",    # Can bypass file permissions for backup purposes
+    "Account Operators",   # Can create and modify user accounts
+    "Domain Controllers",  # All domain controllers in the domain
+    "Print Operators",     # Can manage printers and print queues
+    "Administrators"       # Built-in administrators group
+)
+
+# Get membership information for each critical group
+foreach ($group in $criticalGroups) {
+    try {
+        Write-Host "\n===== $group =====" -ForegroundColor Yellow
+        
+        # Get group details
+        $groupInfo = Get-ADGroup -Identity $group -Properties Description,MemberOf,whenCreated,whenChanged -ErrorAction Stop
+        Write-Host "Description: $($groupInfo.Description)" -ForegroundColor Cyan
+        Write-Host "Created: $($groupInfo.whenCreated)" -ForegroundColor Cyan
+        Write-Host "Last Modified: $($groupInfo.whenChanged)" -ForegroundColor Cyan
+        
+        # Get group members
+        $members = Get-ADGroupMember -Identity $group -ErrorAction Stop
+        Write-Host "\nMembers ($($members.Count)):" -ForegroundColor Green
+        
+        # Process each member
+        foreach ($member in $members) {
+            if ($member.objectClass -eq "user") {
+                $user = Get-ADUser -Identity $member.SID -Properties Enabled,LastLogonDate,PasswordLastSet,PasswordNeverExpires
+                Write-Host "  [User] $($user.Name) ($($user.SamAccountName))" -ForegroundColor White
+                Write-Host "    Enabled: $($user.Enabled), Last Logon: $($user.LastLogonDate), Password Last Set: $($user.PasswordLastSet)" -ForegroundColor Gray
+            }
+            elseif ($member.objectClass -eq "group") {
+                $nestedGroup = Get-ADGroup -Identity $member.SID -Properties Description
+                Write-Host "  [Group] $($nestedGroup.Name) - $($nestedGroup.Description)" -ForegroundColor Magenta
+                
+                # Get nested group members count
+                $nestedMembers = Get-ADGroupMember -Identity $nestedGroup.SID -ErrorAction SilentlyContinue
+                Write-Host "    Contains $($nestedMembers.Count) members" -ForegroundColor Gray
+            }
+            elseif ($member.objectClass -eq "computer") {
+                $computer = Get-ADComputer -Identity $member.SID -Properties OperatingSystem,LastLogonDate
+                Write-Host "  [Computer] $($computer.Name) - $($computer.OperatingSystem)" -ForegroundColor Cyan
+                Write-Host "    Last Logon: $($computer.LastLogonDate)" -ForegroundColor Gray
+            }
+            else {
+                Write-Host "  [$($member.objectClass)] $($member.Name)" -ForegroundColor Yellow
+            }
+        }
+    }
+    catch {
+        Write-Warning "Could not process group '$group': $_"
+    }
+}
+
+# Export all critical group members to CSV
+$reportPath = "$env:USERPROFILE\Desktop\AD_Critical_Groups_$(Get-Date -Format 'yyyyMMdd').csv"
+$allMembers = @()
+
+foreach ($group in $criticalGroups) {
+    try {
+        Get-ADGroupMember -Identity $group -Recursive -ErrorAction Stop | ForEach-Object {
+            $member = $_
+            $memberObject = $null
+            
+            if ($member.objectClass -eq "user") {
+                $user = Get-ADUser -Identity $member.SID -Properties Enabled,LastLogonDate,PasswordLastSet,PasswordNeverExpires -ErrorAction SilentlyContinue
+                $memberObject = [PSCustomObject]@{
+                    Group = $group
+                    MemberType = "User"
+                    Name = $user.Name
+                    SamAccountName = $user.SamAccountName
+                    Enabled = $user.Enabled
+                    LastLogon = $user.LastLogonDate
+                    PasswordLastSet = $user.PasswordLastSet
+                    PasswordNeverExpires = $user.PasswordNeverExpires
+                }
+            }
+            elseif ($member.objectClass -eq "group") {
+                $nestedGroup = Get-ADGroup -Identity $member.SID -Properties Description -ErrorAction SilentlyContinue
+                $memberObject = [PSCustomObject]@{
+                    Group = $group
+                    MemberType = "Group"
+                    Name = $nestedGroup.Name
+                    SamAccountName = $nestedGroup.SamAccountName
+                    Enabled = "N/A"
+                    LastLogon = "N/A"
+                    PasswordLastSet = "N/A"
+                    PasswordNeverExpires = "N/A"
+                }
+            }
+            elseif ($member.objectClass -eq "computer") {
+                $computer = Get-ADComputer -Identity $member.SID -Properties LastLogonDate,OperatingSystem -ErrorAction SilentlyContinue
+                $memberObject = [PSCustomObject]@{
+                    Group = $group
+                    MemberType = "Computer"
+                    Name = $computer.Name
+                    SamAccountName = $computer.SamAccountName
+                    Enabled = $computer.Enabled
+                    LastLogon = $computer.LastLogonDate
+                    PasswordLastSet = "N/A"
+                    PasswordNeverExpires = "N/A"
+                    OperatingSystem = $computer.OperatingSystem
+                }
+            }
+            
+            if ($memberObject) {
+                $allMembers += $memberObject
+            }
+        }
+    }
+    catch {
+        Write-Warning "Could not export members for group '$group': $_"
+    }
+}
+
+$allMembers | Export-Csv -Path $reportPath -NoTypeInformation
+Write-Host "\nExported all critical group members to: $reportPath" -ForegroundColor Green
+```
+
+### Find Domain Users and Computers
+
+```powershell
+# Get all domain users
+Get-ADUser -Filter * -Properties Enabled,LastLogonDate,PasswordLastSet,PasswordNeverExpires | 
+    Select-Object Name,SamAccountName,Enabled,LastLogonDate,PasswordLastSet,PasswordNeverExpires | 
+    Export-Csv -Path "$env:USERPROFILE\Desktop\All_Domain_Users.csv" -NoTypeInformation
+
+# Get all domain computers
+Get-ADComputer -Filter * -Properties OperatingSystem,LastLogonDate,Enabled | 
+    Select-Object Name,DNSHostName,OperatingSystem,LastLogonDate,Enabled | 
+    Export-Csv -Path "$env:USERPROFILE\Desktop\All_Domain_Computers.csv" -NoTypeInformation
+
+# Get all domain controllers
+Get-ADDomainController -Filter * | 
+    Select-Object Name,Domain,Forest,IPv4Address,OperatingSystem,Site,IsGlobalCatalog,IsReadOnly | 
+    Export-Csv -Path "$env:USERPROFILE\Desktop\All_Domain_Controllers.csv" -NoTypeInformation
+```
+
 ## Password Policies
 
 ### Domain Password Policy
