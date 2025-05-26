@@ -54,6 +54,7 @@ cd Windows-Security-Toolkit
 - 🏢 [Active Directory Security](docs/ad-security.md) - Comprehensive AD auditing and security commands
 - 📧 [Exchange Online Security](docs/exchange-security.md) - Exchange Online security auditing commands
 - 🔐 [Windows Security](docs/windows-security.md) - Local Windows system security commands
+- 📖 [Security PowerShell Cheat Sheet](docs/security-cheat-sheet.md) - Quick reference for security commands
 
 #### Guides & Tutorials
 - 🔍 [Incident Response Guide](docs/incident-response.md) - Step-by-step incident response procedures
@@ -128,6 +129,7 @@ The `scripts/audit-tools/` directory contains specialized security audit scripts
 - **Audit-UserAccounts.ps1**: Focused audit of user accounts and permissions
 - **Audit-NetworkSecurity.ps1**: Network configuration and security assessment
 - **Audit-SecurityCompliance.ps1**: Evaluates system against CIS and NIST security benchmarks
+- **Detect-ThreatIndicators.ps1**: Scans for indicators of compromise and potential threats
 
 ### Reporting Tools
 
