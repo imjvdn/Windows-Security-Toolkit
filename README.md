@@ -26,6 +26,8 @@ cd Windows-Security-Toolkit
 
 ## 📚 Documentation
 
+📘 [Exchange Online Security Commands](docs/Exchange-Security-Commands.md) - Comprehensive guide for Exchange security auditing
+
 <details>
 <summary>🔍 Cmdlets</summary>
 
