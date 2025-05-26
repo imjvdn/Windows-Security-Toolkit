@@ -26,7 +26,15 @@ cd Windows-Security-Toolkit
 
 ## 📚 Documentation
 
-📘 [Exchange Online Security Commands](docs/Exchange-Security-Commands.md) - Comprehensive guide for Exchange security auditing
+### Security Command References
+
+- 🏢 [Active Directory Security Commands](docs/commands/ad-security-commands.md) - Comprehensive AD auditing and security commands
+- 📧 [Exchange Online Security Commands](docs/commands/exchange-security-commands.md) - Exchange Online security auditing commands
+- 🔐 [Windows Security Commands](docs/commands/windows-security-commands.md) - Local Windows system security commands
+
+### Guides & Tutorials
+
+- 🔍 [Incident Response Guide](docs/guides/incident-response-part1.md) - Step-by-step incident response procedures
 
 <details>
 <summary>🔍 Cmdlets</summary>
