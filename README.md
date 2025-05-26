@@ -135,6 +135,11 @@ The `scripts/audit-tools/` directory contains specialized security audit scripts
 - **Scan-NetworkPorts.ps1**: Pure PowerShell port scanner for network security assessment
 - **Test-SSLSecurity.ps1**: Checks SSL/TLS configurations and certificate security
 
+### Incident Response Tools
+
+- **Collect-ForensicEvidence.ps1**: Gathers system artifacts with proper hashing and chain of custody
+- **Export-VolatileData.ps1**: Captures memory dumps and volatile system state
+
 ### Reporting Tools
 
 The `scripts/reporting-tools/` directory contains tools for generating professional reports from audit data:
