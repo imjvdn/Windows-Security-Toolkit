@@ -61,21 +61,40 @@ Get-SystemSecurityAudit -OutputDirectory "C:\\MyAudit"
 </details>
 
 <details>
-<summary>🏗️ Project Structure</summary>
+<summary>🚧 Project Structure</summary>
 
 ```
 Windows-Security-Toolkit/
-├── src/                # Source code
-│   ├── Public/        # Functions users will call directly
-│   └── Private/       # Internal helper functions
-├── tests/             # Pester tests
-│   └── environment/   # Test environment setup
-├── examples/          # Example scripts
-├── config/            # Configuration files
-└── docs/              # Documentation
+├── src/                  # Source code for the PowerShell module
+│   ├── WindowsSecurityToolkit.psd1  # Module manifest
+│   ├── WindowsSecurityToolkit.psm1  # Module script
+│   └── Public/             # Public functions
+│       └── Get-SystemSecurityAudit.ps1
+├── scripts/              # Security scripts
+│   ├── audit-tools/       # Targeted security audit scripts
+│   └── reporting-tools/   # Report generation tools
+├── examples/            # Example scripts
+└── docs/                # Documentation
 ```
 
 </details>
+
+## 💼 Security Scripts
+
+### Audit Tools
+
+The `scripts/audit-tools/` directory contains specialized security audit scripts for targeted assessments:
+
+- **Complete-SystemAudit.ps1**: Comprehensive system-wide security audit
+- **Audit-UserAccounts.ps1**: Focused audit of user accounts and permissions
+- **Audit-NetworkSecurity.ps1**: Network configuration and security assessment
+
+### Reporting Tools
+
+The `scripts/reporting-tools/` directory contains tools for generating professional reports from audit data:
+
+- **Convert-AuditToHtmlReport.ps1**: Creates interactive HTML reports with filtering and search
+- **Generate-ExecutiveSummary.ps1**: Produces executive summaries with key findings and recommendations
 
 <details>
 <summary>🔧 Advanced Usage</summary>
