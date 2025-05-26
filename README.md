@@ -6,6 +6,26 @@
   [![GitHub stars](https://img.shields.io/github/stars/imjvdn/Windows-Security-Toolkit?style=social)](https://github.com/imjvdn/Windows-Security-Toolkit/stargazers)
 </div>
 
+## Table of Contents
+
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [How to Use This Toolkit](#-how-to-use-this-toolkit)
+  - [Ready-to-Use Security Scripts](#1-ready-to-use-security-scripts)
+  - [PowerShell Module (Advanced)](#2-powershell-module-advanced)
+- [Documentation](#-documentation)
+  - [Security Command References](#security-command-references)
+  - [Guides & Tutorials](#guides--tutorials)
+- [Testing](#-testing)
+  - [Running Tests](#running-tests)
+  - [Test Structure](#test-structure)
+- [Security Scripts](#-security-scripts)
+  - [Audit Tools](#audit-tools)
+  - [Reporting Tools](#reporting-tools)
+- [PowerShell Module](#-powershell-module)
+- [Advanced Usage](#-advanced-usage)
+- [License](#-license)
+
 ## 🎯 Features
 
 - **Comprehensive Auditing**: Collect system, user, and network security information
@@ -390,3 +410,7 @@ icacls "C:\Windows\System32\config\SECURITY"
 ## 📚 Additional Resources
 - [Microsoft Docs](https://docs.microsoft.com)
 - [SS64 Command Reference](https://ss64.com/)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
