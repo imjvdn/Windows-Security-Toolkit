@@ -18,6 +18,7 @@
   - [Guides & Tutorials](#guides--tutorials)
 - [Security Scripts](#-security-scripts)
   - [Audit Tools](#audit-tools)
+  - [Incident Response Tools](#incident-response-tools)
   - [Reporting Tools](#reporting-tools)
 - [PowerShell Module](#-powershell-module)
 - [Testing](#-testing)
