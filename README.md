@@ -130,6 +130,8 @@ The `scripts/audit-tools/` directory contains specialized security audit scripts
 - **Audit-NetworkSecurity.ps1**: Network configuration and security assessment
 - **Audit-SecurityCompliance.ps1**: Evaluates system against CIS and NIST security benchmarks
 - **Detect-ThreatIndicators.ps1**: Scans for indicators of compromise and potential threats
+- **Scan-NetworkPorts.ps1**: Pure PowerShell port scanner for network security assessment
+- **Test-SSLSecurity.ps1**: Checks SSL/TLS configurations and certificate security
 
 ### Reporting Tools
 
